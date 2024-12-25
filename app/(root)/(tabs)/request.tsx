@@ -1,17 +1,11 @@
 import { View, Text, StyleSheet } from "react-native";
 import React from "react";
 import GoogleTextInput from "@/components/GoogleTextInput";
-import RideLayout from "@/components/RideLayout";
 
 const request = () => {
   return (
-    // <View style={styles.headerContainer}>
-    //   <GoogleTextInput />
-    // </View>
-    <View>
-      <RideLayout title="">
-        <View></View>
-      </RideLayout>
+    <View style={styles.headerContainer}>
+      <GoogleTextInput />
     </View>
   );
 };
