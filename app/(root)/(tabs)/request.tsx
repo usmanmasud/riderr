@@ -5,7 +5,7 @@ import GoogleTextInput from "@/components/GoogleTextInput";
 const request = () => {
   return (
     <View style={styles.headerContainer}>
-      <GoogleTextInput />
+      <GoogleTextInput  />
     </View>
   );
 };
