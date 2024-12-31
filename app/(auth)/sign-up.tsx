@@ -10,7 +10,6 @@ import ReactNativeModal from "react-native-modal";
 
 const singUp = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const { isLoaded, signUp, setActive } = useSignUp();
   const router = useRouter();
 
   const [form, setForm] = useState({
@@ -28,7 +27,6 @@ const singUp = () => {
 
   // Handle submission of sign-up form
   const onSignUpPress = async () => {
-    if (!isLoaded) return;
     console.log("sign up");
   };
 
@@ -62,6 +60,7 @@ const singUp = () => {
           <InputField
             label="Email"
             placeholder="Enter your email"
+            textContentType="emailAddress"
             icon={icons.email}
             value={form.email}
             onChangeText={(value) =>
@@ -72,6 +71,7 @@ const singUp = () => {
             }
           />
           <InputField
+            textContentType="telephoneNumber"
             label="Phone Number"
             placeholder="Enter your phone number"
             icon={icons.phonecall}
@@ -84,6 +84,8 @@ const singUp = () => {
             }
           />
           <InputField
+            textContentType="password"
+            secureTextEntry={true}
             label="Password"
             placeholder="Enter your password"
             icon={icons.lock}

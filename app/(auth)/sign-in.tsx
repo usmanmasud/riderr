@@ -6,42 +6,17 @@ import CustomButton from "@/components/CustomButton";
 import { Link } from "expo-router";
 import OAuth from "@/components/OAuth";
 import { useRouter } from "expo-router";
-import { useSignIn } from "@clerk/clerk-expo";
 
 const singIn = () => {
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
-  const { signIn, setActive, isLoaded } = useSignIn();
   const router = useRouter();
 
-  const onSignInPress = useCallback(async () => {
-    if (!isLoaded) return;
-
-    // Start the sign-in process using the email and password provided
-    try {
-      const signInAttempt = await signIn.create({
-        identifier: form.email,
-        password: form.password,
-      });
-
-      // If sign-in process is complete, set the created session as active
-      // and redirect the user
-      if (signInAttempt.status === "complete") {
-        await setActive({ session: signInAttempt.createdSessionId });
-        router.replace("/");
-      } else {
-        // If the status isn't complete, check why. User might need to
-        // complete further steps.
-        console.error(JSON.stringify(signInAttempt, null, 2));
-      }
-    } catch (err) {
-      // See https://clerk.com/docs/custom-flows/error-handling
-      // for more info on error handling
-      console.error(JSON.stringify(err, null, 2));
-    }
-  }, [isLoaded, form.email, form.password]);
+  const onSignInPress = async () => {
+    console.log("sign in");
+  };
 
   return (
     <ScrollView className="flex-1 bg-white">
@@ -56,6 +31,7 @@ const singIn = () => {
           <InputField
             label="Email"
             placeholder="Enter your email"
+            textContentType="emailAddress"
             icon={icons.email}
             value={form.email}
             onChangeText={(value) =>
@@ -68,6 +44,8 @@ const singIn = () => {
           <InputField
             label="Password"
             placeholder="Enter your password"
+            textContentType="password"
+            secureTextEntry={true}
             icon={icons.lock}
             value={form.password}
             onChangeText={(value) =>
