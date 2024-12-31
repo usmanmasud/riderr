@@ -4,7 +4,7 @@
     "slug": "riderr",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/bluelogo.png",
+    "icon": "./assets/images/bluelogo.jpg",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {

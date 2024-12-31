@@ -7,7 +7,6 @@ import { Link, useRouter } from "expo-router";
 import OAuth from "@/components/OAuth";
 import { useSignUp } from "@clerk/clerk-expo";
 import ReactNativeModal from "react-native-modal";
-import { fetchAPI } from "@/lib/fetch";
 
 const singUp = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -17,6 +16,7 @@ const singUp = () => {
   const [form, setForm] = useState({
     name: "",
     email: "",
+    phoneNumber: "",
     password: "",
   });
 
@@ -29,101 +29,19 @@ const singUp = () => {
   // Handle submission of sign-up form
   const onSignUpPress = async () => {
     if (!isLoaded) return;
-
-    // Start sign-up process using email and password provided
-    try {
-      await signUp.create({
-        emailAddress: form.email,
-        password: form.password,
-      });
-
-      // Send user an email with verification code
-      await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
-
-      // Set 'pendingVerification' to true to display second form
-      // and capture OTP code
-      setVerification({
-        ...verification,
-        state: "pending",
-      });
-    } catch (err: any) {
-      // See https://clerk.com/docs/custom-flows/error-handling
-      // for more info on error handling
-      console.error(JSON.stringify(err, null, 2));
-      Alert.alert(
-        "Error",
-        err.errors[0].longMessage || "An unknown error occurred."
-      );
-    }
+    console.log("sign up");
   };
 
   // Handle submission of verification form
   const onVerifyPress = async () => {
-    if (!isLoaded) return;
-
-    try {
-      // Use the code the user provided to attempt verification
-      const signUpAttempt = await signUp.attemptEmailAddressVerification({
-        code: verification.code,
-      });
-
-      // If verification was completed, set the session to active
-      // and redirect the user
-      if (signUpAttempt.status === "complete") {
-        // create databse user
-        await fetchAPI("/(api)/user", {
-          method: "POST",
-          body: JSON.stringify({
-            name: form.name,
-            email: form.email,
-            clerkId: signUpAttempt.createdUserId,
-          }),
-        });
-
-        await setActive({ session: signUpAttempt.createdSessionId });
-        setVerification({ ...verification, state: "success" });
-        // router.replace("/");
-      } else {
-        // If the status is not complete, check why. User may need to
-        setVerification({
-          ...verification,
-          error: "Veificaton failed",
-          state: "failed",
-        });
-        // complete further steps.
-        console.error(JSON.stringify(signUpAttempt, null, 2));
-      }
-    } catch (err: any) {
-      // See https://clerk.com/docs/custom-flows/error-handling
-      setVerification({
-        ...verification,
-        error: err.errors[0].longMessage,
-        state: "falied",
-      });
-      // for more info on error handling
-      console.error(JSON.stringify(err, null, 2));
-    }
-
-    // if (pendingVerification) {
-    //   return (
-    //     <>
-    //       <Text>Verify your email</Text>
-    //       <TextInput
-    //         value={code}
-    //         placeholder="Enter your verification code"
-    //         onChangeText={(code) => setCode(code)}
-    //       />
-    //       <Button title="Verify" onPress={onVerifyPress} />
-    // </>
-    // );
-    // }
+    console.log("verify email");
   };
 
   return (
     <ScrollView className="flex-1 bg-white">
       <View className="flex-1 bg-white">
-        <View className="relative w-full h-[250px]">
-          <Image source={images.signUpCar} className="z-0 w-full h-[250px]" />
+        <View className="relative w-full h-[150px]">
+          {/* <Image source={images.img} className="z-0 w-full h-[250px]" /> */}
           <Text className="text-2xl text-black font-JakartaSemiBold absolute bottom-5 left-5">
             Create Your Account
           </Text>
@@ -150,6 +68,18 @@ const singUp = () => {
               setForm({
                 ...form,
                 email: value,
+              })
+            }
+          />
+          <InputField
+            label="Phone Number"
+            placeholder="Enter your phone number"
+            icon={icons.phonecall}
+            value={form.phoneNumber}
+            onChangeText={(value) =>
+              setForm({
+                ...form,
+                phoneNumber: value,
               })
             }
           />
@@ -199,7 +129,7 @@ const singUp = () => {
             <InputField
               label="Code"
               icon={icons.lock}
-              placeholder="12345"
+              placeholder="Enter code"
               value={verification.code}
               keyboardType="numeric"
               onChangeText={(code) =>
