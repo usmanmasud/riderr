@@ -7,9 +7,6 @@ import { useEffect } from "react";
 import "react-native-reanimated";
 import { StatusBar } from "expo-status-bar";
 
-import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo";
-const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
-
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
@@ -32,12 +29,6 @@ export default function RootLayout() {
 
   if (!loaded) {
     return null;
-  }
-
-  if (!publishableKey) {
-    throw new Error(
-      "Missing Publishable Key. Please set EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY in your .env"
-    );
   }
 
   return (
