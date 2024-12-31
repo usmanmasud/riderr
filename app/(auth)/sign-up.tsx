@@ -5,7 +5,6 @@ import InputField from "@/components/InputField";
 import CustomButton from "@/components/CustomButton";
 import { Link, useRouter } from "expo-router";
 import OAuth from "@/components/OAuth";
-import { useSignUp } from "@clerk/clerk-expo";
 import ReactNativeModal from "react-native-modal";
 
 const singUp = () => {

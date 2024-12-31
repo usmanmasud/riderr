@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, Image } from "react-native";
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import { icons, images } from "@/constants";
 import InputField from "@/components/InputField";
 import CustomButton from "@/components/CustomButton";
@@ -55,6 +55,9 @@ const singIn = () => {
               })
             }
           />
+          <Link href="/" className="text-lg text-right text-general-200 mt-2">
+            <Text>Forget password</Text>
+          </Link>
           <CustomButton
             title="Sign In"
             onPress={onSignInPress}
